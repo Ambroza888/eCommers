@@ -18,13 +18,13 @@ namespace API.Controllers
         private readonly IGenericRepository<ProductBrand> _productBrandRepo;
         private readonly IGenericRepository<ProductType> _productTypeRepo;
         public ProductsController(
-        IGenericRepository<Product> productsRepo,
-        IGenericRepository<ProductBrand> productBrandRepo,
-        IGenericRepository<ProductType> productTypeRepo)
+            IGenericRepository<Product> productsRepo,
+            IGenericRepository<ProductBrand> productBrandRepo,
+            IGenericRepository<ProductType> productTypeRepo)
         {
-        _productTypeRepo = productTypeRepo;
-        _productBrandRepo = productBrandRepo;
-        _productsRepo = productsRepo;
+            _productTypeRepo = productTypeRepo;
+            _productBrandRepo = productBrandRepo;
+            _productsRepo = productsRepo;
 
         }
 
