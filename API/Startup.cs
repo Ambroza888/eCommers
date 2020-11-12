@@ -37,6 +37,9 @@ namespace API
                 app.UseDeveloperExceptionPage();
             }
 
+            // adding statuscodepage with the code and will go to the error controlloer
+            app.UseStatusCodePagesWithReExecute("/errors/{0}");
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
