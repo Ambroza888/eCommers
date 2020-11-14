@@ -13,6 +13,7 @@ namespace Core.Specifications
             AddInclude(x => x.ProductType);
             AddInclude(x => x.ProductBrand);
             AddOrderBy(x => x.Name);
+            // (PageSize * PageNumber -1), PageSize --- > Skip(50 * 3-1) = 100, 50 = 3th page 50Items
             ApplyPaging(productParams.PageSize * (productParams.PageIndex -1), productParams.PageSize);
 
             if (!string.IsNullOrEmpty(productParams.Sort))
