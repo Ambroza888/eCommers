@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { IBrand } from '../shared/models/Brand';
 import { IPagination } from '../shared/models/pagination';
 import { IProduct } from '../shared/models/Product';
@@ -12,6 +12,12 @@ import { ShopService } from './shop.service';
   styleUrls: ['./shop.component.scss']
 })
 export class ShopComponent implements OnInit {
+
+
+  // using stack: true because of Angular 8. {static: true} means that,
+  // it doesn't rely on any structural directive, is always illustrated, is not conditional,
+  // so we can leave it as TRUE. If is *a-ng needs to be false.
+  @ViewChild('search', {static: true}) searchTerm: ElementRef;
   products: IProduct[];
   brands: IBrand[];
   types: IType[];
@@ -72,8 +78,19 @@ export class ShopComponent implements OnInit {
     this.getProducts();
   }
 
-  onPageChanged(event: any) {
-    this.shopParams.pageNumber = event.page;
+  onPageChanged(currentPageNumber: number) {
+    this.shopParams.pageNumber = currentPageNumber;
+    this.getProducts();
+  }
+
+  onSearch() {
+    this.shopParams.search = this.searchTerm.nativeElement.value;
+    this.getProducts();
+  }
+
+  onReset() {
+    this.searchTerm.nativeElement.value = '';
+    this.shopParams = new ShopParams();
     this.getProducts();
   }
 }
