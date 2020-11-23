@@ -12,6 +12,7 @@ namespace API.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             // need to add this configure service after AddControllers(), because [ApiController] it needs to be init, is the one taking care of validations in the routes, is not like in JavaScript you need to validate every input;
             services.Configure<ApiBehaviorOptions>(options =>
