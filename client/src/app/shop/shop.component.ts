@@ -17,7 +17,7 @@ export class ShopComponent implements OnInit {
   // using stack: true because of Angular 8. {static: true} means that,
   // it doesn't rely on any structural directive, is always illustrated, is not conditional,
   // so we can leave it as TRUE. If is *a-ng needs to be false.
-  @ViewChild('search', {static: true}) searchTerm: ElementRef;
+  @ViewChild('search', {static: false}) searchTerm: ElementRef;
   products: IProduct[];
   brands: IBrand[];
   types: IType[];
