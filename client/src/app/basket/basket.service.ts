@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { IBasket } from '../shared/models/basket';
+import { Basket, IBasket, IBasketItem } from '../shared/models/basket';
 import { IProduct } from '../shared/models/Product';
 
 @Injectable({
@@ -35,5 +35,43 @@ export class BasketService {
 
   getCurrentBasketValue() {
     return this.basketSource.value;
+  }
+
+  addItemToBasket(item: IProduct, quantity = 1) {
+    const itemToAdd: IBasketItem = this.mapProductItemToBasketItem(item, quantity);
+    let basket = this.getCurrentBasketValue();
+
+    if (basket === null) {
+      this.createBasket();
+    }
+
+    basket.items = this.addOrUpdateItem(basket.items, itemToAdd, quantity);
+  }
+
+
+
+  // -----------------------------------------------------------------------------
+  // Helper methods
+  // -----------------------------------------------------------------------------
+  private addOrUpdateItem(items: IBasketItem[], itemToAdd: IBasketItem, quantity: number): IBasketItem[] {
+    throw new Error('Method not implemented.');
+  }
+
+  private createBasket(): IBasket {
+    const basket = new Basket();
+    localStorage.setItem('basket_id', basket.id);
+    return basket;
+  }
+
+  private mapProductItemToBasketItem(item: IProduct, quantity: number): IBasketItem {
+    return {
+      id: item.id,
+      productName: item.name,
+      price: item.price,
+      quantity,
+      pictureUrl: item.pictureUrl,
+      brand: item.productBrand,
+      type: item.productType
+    };
   }
 }
