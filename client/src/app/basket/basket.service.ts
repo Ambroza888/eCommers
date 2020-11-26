@@ -28,6 +28,7 @@ export class BasketService {
   setBasket(basket: IBasket) {
     return this.http.post(this.baseUrl + 'basket', basket).subscribe((response: IBasket) => {
       this.basketSource.next(response);
+      console.log(response);
     }, error => {
       console.log(error);
     });
@@ -39,10 +40,10 @@ export class BasketService {
 
   addItemToBasket(item: IProduct, quantity = 1) {
     const itemToAdd: IBasketItem = this.mapProductItemToBasketItem(item, quantity);
-    const basket: IBasket = this.getCurrentBasketValue();
+    let basket: IBasket = this.getCurrentBasketValue();
 
     if (basket === null) {
-      this.createBasket();
+      basket = this.createBasket();
     }
 
     basket.items = this.addOrUpdateItem(basket.items, itemToAdd, quantity);
@@ -55,6 +56,7 @@ export class BasketService {
   // Helper methods
   // -----------------------------------------------------------------------------
   private addOrUpdateItem(items: IBasketItem[], itemToAdd: IBasketItem, quantity: number): IBasketItem[] {
+
     const index = items.findIndex(i => i.id === itemToAdd.id);
     // if index return -1 that means the item is not inside the array of items and we just push it.
     if (index === -1) {
