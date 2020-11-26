@@ -39,13 +39,14 @@ export class BasketService {
 
   addItemToBasket(item: IProduct, quantity = 1) {
     const itemToAdd: IBasketItem = this.mapProductItemToBasketItem(item, quantity);
-    let basket = this.getCurrentBasketValue();
+    const basket: IBasket = this.getCurrentBasketValue();
 
     if (basket === null) {
       this.createBasket();
     }
 
     basket.items = this.addOrUpdateItem(basket.items, itemToAdd, quantity);
+    this.setBasket(basket);
   }
 
 
@@ -54,7 +55,16 @@ export class BasketService {
   // Helper methods
   // -----------------------------------------------------------------------------
   private addOrUpdateItem(items: IBasketItem[], itemToAdd: IBasketItem, quantity: number): IBasketItem[] {
-    throw new Error('Method not implemented.');
+    const index = items.findIndex(i => i.id === itemToAdd.id);
+    // if index return -1 that means the item is not inside the array of items and we just push it.
+    if (index === -1) {
+      itemToAdd.quantity = quantity;
+      items.push(itemToAdd);
+    } else {
+    // if index return different then -1 means that is inside the array, so we just increment the quantity of the item.
+      items[index].quantity += quantity;
+    }
+    return items;
   }
 
   private createBasket(): IBasket {
