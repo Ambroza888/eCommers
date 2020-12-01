@@ -25,21 +25,22 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<StoreContext>(x => x.UseMySql(_config.GetConnectionString("DefaultConnection")));
+
+            services.AddDbContext<StoreContext>(x =>
+                x.UseMySql(_config.GetConnectionString("DefaultConnection")));
             services.AddDbContext<AppIdentityDbContext>(x =>
             {
                 x.UseMySql(_config.GetConnectionString("IdentityConnection"));
             });
-
             services.AddSingleton<IConnectionMultiplexer>(c => {
                 var configuration = ConfigurationOptions.Parse(_config
                     .GetConnectionString("Redis"), true);
                 return ConnectionMultiplexer.Connect(configuration);
             });
 
-
             services.AddAutoMapper(typeof(MappingProfiles));
             services.AddApplicationServices();
+            services.AddIdentityServices(_config);
             services.AddSwaggerDocumentation();
             services.AddCors(opt =>
             {
@@ -65,6 +66,8 @@ namespace API
 
             app.UseCors("CorsPolicy");
 
+            // UseAuthentication has to come before authorization.
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseSwaggerDocumentation();
