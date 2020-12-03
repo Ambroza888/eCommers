@@ -53,7 +53,7 @@ namespace API.Controllers
 
             var user = await _userManager.FindByEmailAsync(email);
 
-            return null;
+            return user.Address;
         }
 
         [HttpPost("login")]
