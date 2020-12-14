@@ -18,17 +18,17 @@ export class AccountService {
   constructor(private http: HttpClient, private router: Router) { }
 
 
-  login(value: any) {
-    this.http.post(this.baseUrl + 'account/login', value).pipe(
+  login(value: any)  {
+    return this.http.post<IUser>(this.baseUrl + 'account/login', value).pipe(
       map((user: IUser) => {
-        this.currentUserSource.next(user);
         localStorage.setItem('token', user.token);
+        this.currentUserSource.next(user);
       })
     );
   }
 
   register(value: any) {
-    this.http.post(this.baseUrl + 'account/register', value).pipe(
+    return this.http.post(this.baseUrl + 'account/register', value).pipe(
       map((user: IUser) => {
         localStorage.setItem('token', user.token);
       })
