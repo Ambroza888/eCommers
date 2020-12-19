@@ -46,6 +46,7 @@ export class AccountService {
     return this.http.post(this.baseUrl + 'account/register', value).pipe(
       map((user: IUser) => {
         localStorage.setItem('token', user.token);
+        this.currentUserSource.next(user);
       })
     );
   }
