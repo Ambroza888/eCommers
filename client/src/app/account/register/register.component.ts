@@ -10,6 +10,8 @@ import { AccountService } from '../account.service';
 })
 export class RegisterComponent implements OnInit {
   RegisterForm: FormGroup;
+  errors: string[];
+
   constructor(private fb: FormBuilder, private accountService: AccountService, private route: Router) { }
 
   ngOnInit() {
@@ -30,6 +32,7 @@ export class RegisterComponent implements OnInit {
       this.route.navigateByUrl('/shop');
     }, error => {
       console.log(error);
+      this.errors = error.errors;
     });
   }
 }
