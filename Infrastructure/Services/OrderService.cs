@@ -9,6 +9,13 @@ namespace Infrastructure.Services
   {
     public Task<Order> CreateOrderAsync(string buyerEmail, int deliveryMethod, string basketId, Address shippingAddress)
     {
+      // get basket from basket repo
+      // get items from the product repo
+      // get delivery method from repo
+      // calc subtotal
+      // create order
+      // save to db
+      // return the order
       throw new System.NotImplementedException();
     }
 
