@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Core.Entities;
 using Core.Entities.OrderAggregate;
@@ -20,7 +21,7 @@ namespace Infrastructure.Services
       _orderRepo = orderRepo;
     }
 
-    public async Task<Order> CreateOrderAsync(string buyerEmail, int deliveryMethod, string basketId, Address shippingAddress)
+    public async Task<Order> CreateOrderAsync(string buyerEmail, int deliveryMethodId, string basketId, Address shippingAddress)
     {
       // get basket from basket repo
       var basket = await _basketRepo.GetBasketAsync(basketId);
@@ -36,11 +37,17 @@ namespace Infrastructure.Services
       }
 
       // get delivery method from repo
+      var deliveryMethod = await _dmRepo.GetByIdAsync(deliveryMethodId);
+
       // calc subtotal
+      var subtotal = items.Sum(item => item.Price * item.Quantity);
+
       // create order
-      // save to db
+      var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod, subtotal);
+      // TODO: save to db
+
       // return the order
-      throw new System.NotImplementedException();
+      return order;
     }
 
     public Task<IReadOnlyList<DeliveryMethod>> GetDeliveryMethodsAsync()
